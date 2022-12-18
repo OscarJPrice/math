@@ -1,18 +1,16 @@
 import Math.Arithmetic.*;
+import Math.Graph.FiniteSum;
 import Math.Graph.Func;
 
 class Main {
     public static void main(String[] args) {
         var f = new Func(
-            new Add(
-                new Exp(Func.x, 1),
-                new Exp(Func.x, 2)
-            )
+            new Exp(Func.x, 2)
         );
-        f.of(3);
-        System.out.println(f);
-        var df = f.derive();
-        System.out.println(df);
+        var sum = new FiniteSum(f);
+        // System.out.println(sum.LeftSum(10, 0.0, 2.0));
+        // System.out.println(sum.RightSum(10, 0.0, 2.0));
+        System.out.println(sum.midSum(4, 0, 2));
 
     }
 }

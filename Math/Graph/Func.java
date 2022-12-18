@@ -1,5 +1,7 @@
 package Math.Graph;
 
+import java.math.BigDecimal;
+
 import Math.*;
 import Math.Arithmetic.*;
 
@@ -12,9 +14,14 @@ public class Func {
         this.eq = equation;
     }
 
-    public void of(double x) {
+    public BigDecimal of(double x) {
         Func.x.set(x);
-        eq.eval();
+        return eq.eval();
+    }
+
+    public BigDecimal of(BigDecimal x) {
+        Func.x.set(x.doubleValue());
+        return eq.eval();
     }
 
     public Func derive() {
