@@ -25,16 +25,30 @@ public class Add extends Operation {
         return new Add(this.operands.first.antiderive(), this.operands.second.antiderive());
     }
 
+    public Construct optimize() {
+        if (this.operands.first.getClass().equals(Variable.class)) {
+            if (this.operands.first.equals(this.operands.second)) {
+                return new Mul(new Constant(2), this.operands.first);
+            }
+        }
+        else if (this.operands.first.getClass().equals(Constant.class)) {
+            if (this.operands.second.getClass().equals(Constant.class)) {
+                return new Constant(this.operands.first.eval().add(this.operands.first.eval()));
+            }
+        }
+        return new Div(this.operands.first.optimize(), this.operands.second.optimize());
+    }
+
     public boolean has_x() {
         return this.operands.first.has_x() || this.operands.second.has_x();
     }
 
-	public Integer get_x_degree(Integer n) {
-		return this.operands.first.get_x_degree(n) + this.operands.second.get_x_degree(n);
+	public BigDecimal get_x_degree(BigDecimal n) {
+		return this.operands.first.get_x_degree(n).add(this.operands.second.get_x_degree(n));
 	}
 
-	public Integer get_x_degree() {
-        Integer n = Integer.valueOf(0);
-		return this.operands.first.get_x_degree(n) + this.operands.second.get_x_degree(n);
+	public BigDecimal get_x_degree() {
+        BigDecimal n = BigDecimal.valueOf(0);
+		return this.operands.first.get_x_degree(n).add(this.operands.second.get_x_degree(n));
 	}
 }

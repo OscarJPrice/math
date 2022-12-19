@@ -1,5 +1,6 @@
 package Math.Arithmetic;
 import java.math.BigDecimal;
+
 import Math.*;
 import Math.Graph.Func;
 
@@ -7,7 +8,7 @@ import Math.Graph.Func;
 public class Div extends Operation {
 
     public BigDecimal eval() {
-        return this.operands.first.eval().divide(this.operands.second.eval());
+        return this.operands.first.eval().divide(this.operands.second.eval(), precision);
     }
 
     public Div(Construct n, Construct by) {
@@ -44,16 +45,28 @@ public class Div extends Operation {
         return new Constant();
     }
 
-    public boolean has_x() {
-        return this.operands.first.has_x() || this.operands.second.has_x();
+    public Construct optimize() {
+        if (this.operands.first.optimize().getClass().equals(Constant.class)) {
+            if (this.operands.second.optimize().getClass().equals(Constant.class)) {
+                return new Constant(this.eval());
+            }
+        }
+        return new Div(this.operands.first.optimize(), this.operands.second.optimize());
     }
 
-	public Integer get_x_degree(Integer n) {
-		return this.operands.first.get_x_degree(n) + this.operands.second.get_x_degree(n);
-	}
+    @SuppressWarnings("unused")
+    public void reduce() {
+        if (this.operands.first.optimize().getClass().equals(Constant.class)) {
+            if (this.operands.second.optimize().getClass().equals(Constant.class)) {
+                var a = this.operands.first.optimize().eval().stripTrailingZeros();
+                var b = this.operands.second.optimize().eval().stripTrailingZeros();
+                if (a.scale() <= 0 && b.scale() <= 0) {
+                    var gcd = new BigDecimal(a.toBigIntegerExact().gcd(b.toBigIntegerExact()));
+                    this.operands.first = new Constant(a.divide(gcd, precision));
+                    this.operands.second = new Constant(b.divide(gcd, precision));
+                }
+            }
+        }
 
-	public Integer get_x_degree() {
-        Integer n = Integer.valueOf(0);
-		return this.operands.first.get_x_degree(n) + this.operands.second.get_x_degree(n);
-	}
+    }
 }

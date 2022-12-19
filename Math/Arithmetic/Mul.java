@@ -1,7 +1,6 @@
 package Math.Arithmetic;
 import java.math.BigDecimal;
 import Math.*;
-import Math.Graph.*;
 
 public class Mul extends Operation{
 
@@ -24,13 +23,31 @@ public class Mul extends Operation{
         else if (fox.derive().eval().equals(BigDecimal.valueOf(0))) return new Mul(gox.derive(), fox);
         else if (gox.derive().eval().equals(BigDecimal.valueOf(0))) return new Mul(fox.derive(), gox);
         return new Add( new Mul(fox.derive(), gox), new Mul(gox.derive(), fox));
-    }   
+    }
+
+    public Construct optimize() {
+        if (this.operands.first.getClass() == Variable.class) {
+            if (this.operands.second.equals(this.operands.first)) {
+                return new Exp(this.operands.first, BigDecimal.TWO);
+            }
+            else if (this.operands.second.getClass() == Exp.class) {
+                if (this.operands.first.equals(((Exp) this.operands.second).operand)) {
+                    return new Exp(this.operands.first, ((Exp) this.operands.second).degree.add(BigDecimal.ONE));
+                }
+            }
+            else if (this.operands.second.optimize().getClass().equals(Constant.class)) {
+                return new Mul(this.operands.second, this.operands.first);
+            }
+        }
+        if (this.operands.first.getClass().equals(Constant.class)) {
+            if (this.operands.second.optimize().getClass().equals(Constant.class)) {
+                return new Constant(this.operands.first.eval().multiply(this.operands.second.eval()));
+            }
+        }
+        return new Div(this.operands.first.optimize(), this.operands.second.optimize());
+    }
     
     public Construct antiderive() {
         return new Constant();
-    }
-
-    public boolean has_x() {
-        return this.operands.first.has_x() || this.operands.second.has_x();
     }
 }
