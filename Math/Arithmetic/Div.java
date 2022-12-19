@@ -20,7 +20,7 @@ public class Div extends Operation {
     public Construct derive() {
         var fox = this.operands.first;
         var gox = this.operands.second;
-        if (this.operands.first.derive().equals(0)) {
+        if (this.operands.first.derive().eval().equals(BigDecimal.valueOf(0))) {
             return new Div(new Mul(gox.derive(), fox), new Mul(gox, gox));
         }
         return new Div(new Sub( new Mul(fox.derive(), gox), new Mul(gox.derive(), fox)), new Mul(gox, gox));

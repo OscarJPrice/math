@@ -1,11 +1,9 @@
 package Math.Graph;
 
+import Math.*;
 import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 
 public class FiniteSum {
-
     Func f;
 
     public FiniteSum(Func f) {
@@ -16,7 +14,6 @@ public class FiniteSum {
         return simpSum(n, new BigDecimal(a), new BigDecimal(b));
     }
     public BigDecimal simpSum(int n, BigDecimal a, BigDecimal b) {
-        var context = new MathContext(15, RoundingMode.DOWN);
 
         if ((n&1)==1) throw new IllegalArgumentException("Non even n");
         BigDecimal sum = BigDecimal.valueOf(0);
@@ -30,7 +27,7 @@ public class FiniteSum {
         sum = sum.add(f.of(b));
 
 
-        return sum.multiply(df, context).divide(BigDecimal.valueOf(3), context);
+        return sum.multiply(df, Construct.precision).divide(BigDecimal.valueOf(3), Construct.precision);
     }
 
     public BigDecimal rightSum(int n, double a, double b) {
