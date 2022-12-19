@@ -32,7 +32,7 @@ public class Constant extends Term {
     }
 
     public String toString() {
-        return value.toString();
+        return value.stripTrailingZeros().toString();
     }
 
     public Construct derive() {
@@ -44,9 +44,10 @@ public class Constant extends Term {
     }
 
     public Construct optimize() {
-        return this;
+        return new Constant(this.value.stripTrailingZeros());
     }
 
+    @SuppressWarnings("unused")
     public Div asRatio() {
         var result = this.value.toBigInteger();
         var remainder = this.value.subtract(new BigDecimal(result));

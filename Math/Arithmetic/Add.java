@@ -3,6 +3,8 @@ import java.math.BigDecimal;
 
 import Math.Construct;
 
+import static java.math.BigDecimal.ZERO;
+
 public class Add extends Operation { 
 
     public BigDecimal eval() {
@@ -28,15 +30,21 @@ public class Add extends Operation {
     public Construct optimize() {
         if (this.operands.first.getClass().equals(Variable.class)) {
             if (this.operands.first.equals(this.operands.second)) {
-                return new Mul(new Constant(2), this.operands.first);
+                return new Mul(new Constant(2), this.operands.first).optimize();
             }
         }
-        else if (this.operands.first.getClass().equals(Constant.class)) {
+        if (this.operands.first.getClass().equals(Constant.class)) {
             if (this.operands.second.getClass().equals(Constant.class)) {
                 return new Constant(this.operands.first.eval().add(this.operands.first.eval()));
             }
         }
-        return new Div(this.operands.first.optimize(), this.operands.second.optimize());
+        if (this.operands.first.eval().stripTrailingZeros().equals(ZERO)) {
+            return this.operands.second.optimize();
+        }
+        if (this.operands.second.eval().stripTrailingZeros().equals(ZERO)) {
+            return this.operands.first.optimize();
+        }
+        return new Add(this.operands.first.optimize(), this.operands.second.optimize());
     }
 
     public boolean has_x() {

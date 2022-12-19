@@ -14,6 +14,7 @@ public class Func {
         this.eq = equation;
     }
 
+    @SuppressWarnings("unused")
     public BigDecimal of(double x) {
         Func.x.set(BigDecimal.valueOf(x));
         return eq.eval();
@@ -25,7 +26,7 @@ public class Func {
     }
 
     public Func derive() {
-        return new Func(eq.derive());
+        return new Func(eq.derive().optimize());
     }
 
     public String toString() {

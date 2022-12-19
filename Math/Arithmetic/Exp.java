@@ -56,7 +56,7 @@ public class Exp extends Operation {
         this.degree = n;
     }
 
-    
+
     public Construct derive() {
         if (operand.getClass() == Variable.class) {
             if (degree.equals(BigDecimal.valueOf(1))) return new Constant(1);
@@ -75,6 +75,12 @@ public class Exp extends Operation {
         if (this.operand.getClass() == Exp.class) {
             var base = ((Exp)this.operand.optimize());
             return new Exp(base.operand, base.degree.multiply(degree));
+        }
+        if (this.degree.stripTrailingZeros().equals(BigDecimal.ONE)) {
+            return operand;
+        }
+        if (this.degree.stripTrailingZeros().equals(BigDecimal.ZERO)) {
+            return new Constant(1);
         }
         return this;
     }
