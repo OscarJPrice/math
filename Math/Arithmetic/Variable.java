@@ -13,6 +13,10 @@ public class Variable extends Term {
         this.value = BigDecimal.valueOf(val);
     }
 
+    public void set(BigDecimal val) {
+        this.value = val;
+    }
+
     public Variable(String name, BigDecimal value) {
         this.name = name;
         this.value = value;
