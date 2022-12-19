@@ -15,12 +15,12 @@ public class Func {
     }
 
     public BigDecimal of(double x) {
-        Func.x.set(x);
+        Func.x.set(BigDecimal.valueOf(x));
         return eq.eval();
     }
 
     public BigDecimal of(BigDecimal x) {
-        Func.x.set(x.doubleValue());
+        Func.x.set(x);
         return eq.eval();
     }
 
