@@ -21,4 +21,12 @@ public class Sub extends Operation {
         return new Sub(this.operands.first.derive(), this.operands.second.derive());
     }
 
+    public Construct antiderive() {
+        return new Sub(this.operands.first.antiderive(), this.operands.second.antiderive());
+    }
+
+    public boolean has_x() {
+        return this.operands.first.has_x() || this.operands.second.has_x();
+    }
+
 }

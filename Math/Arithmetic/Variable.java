@@ -2,6 +2,7 @@ package Math.Arithmetic;
 import java.math.BigDecimal;
 
 import Math.Construct;
+import Math.Graph.Func;
 
 public class Variable extends Term {
 
@@ -37,5 +38,13 @@ public class Variable extends Term {
 
     public String toString() {
         return name;
+    }
+
+    public Construct antiderive() {
+        return this;
+    }
+
+    public boolean has_x() {
+        return this.equals(Func.x);
     }
 }

@@ -1,6 +1,7 @@
 package Math.Arithmetic;
 import java.math.BigDecimal;
 import Math.*;
+import Math.Graph.*;
 
 public class Mul extends Operation{
 
@@ -24,4 +25,12 @@ public class Mul extends Operation{
         else if (gox.derive().eval().equals(BigDecimal.valueOf(0))) return new Mul(fox.derive(), gox);
         return new Add( new Mul(fox.derive(), gox), new Mul(gox.derive(), fox));
     }   
+    
+    public Construct antiderive() {
+        return new Constant();
+    }
+
+    public boolean has_x() {
+        return this.operands.first.has_x() || this.operands.second.has_x();
+    }
 }

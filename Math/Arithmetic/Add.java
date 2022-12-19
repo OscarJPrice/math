@@ -20,4 +20,21 @@ public class Add extends Operation {
     public Construct derive() {
         return new Add(this.operands.first.derive(), this.operands.second.derive());
     }
+
+    public Construct antiderive() {
+        return new Add(this.operands.first.antiderive(), this.operands.second.antiderive());
+    }
+
+    public boolean has_x() {
+        return this.operands.first.has_x() || this.operands.second.has_x();
+    }
+
+	public Integer get_x_degree(Integer n) {
+		return this.operands.first.get_x_degree(n) + this.operands.second.get_x_degree(n);
+	}
+
+	public Integer get_x_degree() {
+        Integer n = Integer.valueOf(0);
+		return this.operands.first.get_x_degree(n) + this.operands.second.get_x_degree(n);
+	}
 }

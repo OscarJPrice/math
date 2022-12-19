@@ -2,6 +2,7 @@ package Math.Arithmetic;
 
 import java.math.BigDecimal;
 import Math.*;
+import Math.Graph.Func;
  
 
 public class Exp extends Operation {
@@ -64,4 +65,26 @@ public class Exp extends Operation {
         }
         return new Constant();
     }
+
+    public Construct antiderive() {
+        if(operand.equals(Func.x))
+            return new Div(new Exp(operand, degree.add(BigDecimal.ONE)), new Constant(this.degree.add(BigDecimal.ONE)));
+        return new Div(new Mul(new Exp(operand, degree.add(BigDecimal.ONE)), Func.x), new Constant(this.degree.add(BigDecimal.ONE)));
+    }
+
+    public boolean has_x() {
+        return operand.has_x();
+    }
+
+
+	public Integer get_x_degree(Integer n) {
+		if (this.operand.getClass() == Func.x) {
+            return n + degree.;
+        }
+	}
+
+	public Integer get_x_degree() {
+        Integer n = Integer.valueOf(0);
+		return this.operands.first.get_x_degree(n) + this.operands.second.get_x_degree(n);
+	}
 }
